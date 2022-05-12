@@ -1,5 +1,4 @@
 import axios from 'axios';
-import ElementUI from 'element-ui';
 
 const request = axios.create({
     baseURL: '/api',  // url = base url + request url /

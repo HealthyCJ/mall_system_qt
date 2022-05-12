@@ -4,24 +4,24 @@
             <div class="login">
                 <div>
                     <div style="margin: 20px 0; text-align: center; font-size: 24px">
-                        <b>挖掘机配件销售系统</b>
+                        <b>挖掘机配件商城</b>
                     </div>
-                    <el-form-item prop="employeeAccount">
+                    <el-form-item prop="userAccount">
                         <!--ref被用来给元素或子组件注册引用信息,引用信息将会注册在父组件的$refs对象上-->
-                        <el-input placeholder="员工工号" prefix-icon="el-icon-user" ref="employeeAccount"
+                        <el-input placeholder="客户账号" prefix-icon="el-icon-user" ref="userAccount"
                                   type="text"
-                                  v-model="loginForm.employeeAccount"></el-input>
+                                  v-model="loginForm.userAccount"></el-input>
                         <!--去除自动填充和历史记录-->
                         <label>
                             <input type="password" style="display:none"/>
                         </label>
                     </el-form-item>
 
-                    <el-form-item prop="employeePassword">
-                        <el-input placeholder="密码" prefix-icon="el-icon-lock" ref="employeePassword"
+                    <el-form-item prop="userPassword">
+                        <el-input placeholder="密码" prefix-icon="el-icon-lock" ref="userPassword"
                                   type="password"
                                   show-password
-                                  v-model="loginForm.employeePassword"></el-input>
+                                  v-model="loginForm.userPassword"></el-input>
                         <label>
                             <input style="display:none" type="password"/>
                         </label>
@@ -52,8 +52,8 @@
 </template>
 
 <script>
-    import {employeeLogin} from '../api/employee'
-    import {setRoutes} from '../router/index'
+
+    import {userLogin} from "@/api/user";
 
     export default {
         name: 'Login',
@@ -61,12 +61,12 @@
             return {
                 // 表单校验
                 rules: {
-                    employeeAccount: [{required: true, message: '请输入员工工号', trigger: 'blur'}],
-                    employeePassword: [{required: true, message: '请输入密码', trigger: 'blur'}]
+                    userAccount: [{required: true, message: '请输入客户账号', trigger: 'blur'}],
+                    userPassword: [{required: true, message: '请输入密码', trigger: 'blur'}]
                 },
                 loginForm: {
-                    employeeAccount: '',
-                    employeePassword: '',
+                    userAccount: '',
+                    userPassword: '',
                     // 验证码
                     verification: ''
                 },
@@ -149,14 +149,10 @@
 
             // 调用后台登录判断方法
             login() {
-                employeeLogin(this.loginForm).then(res => {
+                userLogin(this.loginForm).then(res => {
                     if (res.code === 10000) {
                         // 存储用户信息到浏览器
-                        localStorage.setItem("employee", JSON.stringify(res.data));
-                        localStorage.setItem("menuList", JSON.stringify(res.data.menuList));
-                        localStorage.setItem("token", JSON.stringify(res.data.token));
-                        // 动态设置当前用户路由
-                        setRoutes();
+                        localStorage.setItem("user", JSON.stringify(res.data));
                         // 登陆成功跳转到主页
                         this.$router.push('/home');
                         this.$message({
