@@ -1,25 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from 'vue'
+import Router from 'vue-router'
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+Vue.use(Router);
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+// 配置导出路由
+let router = new Router({
+    routes: [
+        {
+            path: '/',
+            name: 'Login',
+            component: () => import('../views/Login'),
+        },
+        {
+            path: '/register',
+            name: 'Register',
+            component: () => import('../views/register/Register'),
+        },
+        {
+            path: '/404',
+            name: '404',
+            component: () => import('../layout/components/404'),
+        },
+        {
+            path: '/home',
+            name: 'Home',
+            component: () => import('../layout/components/Home'),
+            redirect: '/home',
+            children: [
+                {
+                    path: '/front',
+                    name: 'Front',
+                    component: () => import('../views/Front'),
+                },
+            ]
+        },
+    ]
+});
 
 export default router
