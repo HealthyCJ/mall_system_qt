@@ -4,6 +4,7 @@ import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router';
+import store from './store';
 import App from './App.vue';
 
 import '@assets/css/global.css'
@@ -16,5 +17,6 @@ Vue.prototype.$url = 'http://localhost:8081/api';
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App),
 });

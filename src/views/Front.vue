@@ -1,44 +1,52 @@
 <template>
-    <div>
-        <div style="display: flex; height: 60px; line-height: 60px; border-bottom: 1px solid #ccc">
-            <div style="width: 200px; text-align: center">欢迎来到购物商城</div>
-            <div style="flex: 1">
-                <ul style="list-style: none; background-color: #98FB98">
-                    <li class="item"><a href="/">菜单1</a></li>
-                    <li class="item"><a href="/">菜单2</a></li>
-                    <li class="item"><a href="/">菜单3</a></li>
-                    <li class="item"><a href="/">菜单4</a></li>
-                </ul>
-            </div>
-            <div style="width: 200px">
-                昵称
-            </div>
+    <div class="container">
+        <div style="width: 15%;"/>
+        <div class="top">
+            <a @click="$router.push('/front')">
+                <img src="../assets/sany-logo.png" class="logo">
+            </a>
         </div>
-        <router-view />
+
+        front
+        <div style="width: 15%;"/>
     </div>
 </template>
 
 <script>
     export default {
         name: "FrontHome",
-        /*data() {
-        },
-        methods: {},
-        mounted: {}*/
+        data() {
+            return {}
+        }
     }
 </script>
 
 <style lang="scss" scoped>
+    .container {
+        display: flex;
+    }
+
+    .top {
+        height: 8vh;
+    }
+
+    .logo {
+        width: 174px;
+        height: 64px
+    }
+
     .item {
         display: inline-block;
         width: 100px;
         text-align: center;
         cursor: pointer;
     }
-    .item a{
+
+    .item a {
         color: #1E90EF;
     }
-    .item:hover{
+
+    .item:hover {
         background-color: lightblue;
     }
 </style>

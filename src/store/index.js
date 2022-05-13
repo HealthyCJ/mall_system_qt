@@ -1,14 +1,14 @@
-import { createStore } from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
+import router from "../router";
 
-export default createStore({
-  state: {
-  },
-  getters: {
-  },
+Vue.use(Vuex);
+
+export default new Vuex.Store({
   mutations: {
-  },
-  actions: {
-  },
-  modules: {
+    logout() {
+      localStorage.removeItem("user");
+      router.push("/login");
+    }
   }
-})
+});

@@ -7,19 +7,19 @@
                         <b>注册账号</b>
                     </div>
                     <!--注册只要员工姓名，工号后台默认生成 - 待完善-->
-                    <el-form-item prop="employeeAccount">
+                    <el-form-item prop="userAccount">
                         <el-input autocomplete="off" placeholder="请输入员工工号" prefix-icon="el-icon-user-solid" type="text"
-                                  v-model="registerForm.employeeAccount"></el-input>
+                                  v-model="registerForm.userAccount"></el-input>
                     </el-form-item>
 
-                    <el-form-item prop="employeeName">
+                    <el-form-item prop="userName">
                         <el-input autocomplete="off" placeholder="请输入用户名" prefix-icon="el-icon-user" type="text"
-                                  v-model="registerForm.employeeName"></el-input>
+                                  v-model="registerForm.userName"></el-input>
                     </el-form-item>
-                    <el-form-item prop="employeePassword">
+                    <el-form-item prop="userPassword">
                         <el-input autocomplete="off" placeholder="请输入密码" prefix-icon="el-icon-lock" show-password
                                   type="password"
-                                  v-model="registerForm.employeePassword"></el-input>
+                                  v-model="registerForm.userPassword"></el-input>
                     </el-form-item>
                     <el-form-item prop="checkPass">
                         <el-input autocomplete="off" placeholder="请确认密码" prefix-icon="el-icon-circle-check"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import {insertEmployee} from "../../api/employee";
+    import {insertUser} from "@/api/user";
 
     export default {
         name: "Register",
@@ -65,7 +65,7 @@
             let validatePass2 = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
-                } else if (value !== this.registerForm.employeePassword) {
+                } else if (value !== this.registerForm.userPassword) {
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
@@ -73,15 +73,15 @@
             };
             return {
                 registerForm: {
-                    employeeAccount: '',
-                    employeeName: '',
-                    employeePassword: '',
+                    userAccount: '',
+                    userName: '',
+                    userPassword: '',
                     checkPass: ''
                 },
                 rules: {
-                    employeeAccount: [{required: true, message: '请输入员工工号', trigger: 'blur'}],
-                    employeeName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-                    employeePassword: [{validator: validatePass, trigger: 'blur'},
+                    userAccount: [{required: true, message: '请输入用户账号', trigger: 'blur'}],
+                    userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+                    userPassword: [{validator: validatePass, trigger: 'blur'},
                         {required: true, message: '请输入密码', trigger: 'blur'}],
                     checkPass: [{validator: validatePass2, trigger: 'blur'}]
                 },
@@ -91,7 +91,7 @@
         methods: {
             // 注册员工
             register() {
-                insertEmployee(this.registerForm).then(res => {
+                insertUser(this.registerForm).then(res => {
                     if (res.code === 10000) {
                         // 登陆成功跳转到主页
                         this.$router.push('/login');

@@ -14,6 +14,19 @@ export function userLogin(data) {
 }
 
 /**
+ * 根据账号查看客户信息
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function getUser(data) {
+    return request({
+        url: '/system/user/user/' + data.userAccount,
+        method: 'get',
+        data
+    })
+}
+
+/**
  * 查看用户信息
  * @param data
  * @returns {AxiosPromise}

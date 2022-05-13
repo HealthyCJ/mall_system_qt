@@ -3,7 +3,7 @@
         <img src="../../assets/not_found.png" alt="">
         <p>您访问的页面不存在...</p>
         <div>
-            <router-link :to="{path: '/'}">
+            <router-link :to="{path: 'home'}">
                 <el-button type="primary" plain>返回首页</el-button>
             </router-link>
         </div>

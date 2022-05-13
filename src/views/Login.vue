@@ -124,7 +124,6 @@
 
             // 验证码判断
             handleLogin() {
-                this.login();
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         if (this.loginForm.verification === this.checkCode) {
