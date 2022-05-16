@@ -41,7 +41,8 @@
                 <!-- 输入不了 -待完善 -->
                 <el-input clearable placeholder="请输入关键字" style="width: 300px"
                           v-model="searchParameters.inputCondition"></el-input>
-                <el-button @click="search" icon="el-icon-search" size="medium" style="margin-left: 10px" type="primary">搜索
+                <el-button @click="search" icon="el-icon-search" size="medium" style="margin-left: 10px" type="primary">
+                    搜索
                 </el-button>
             </div>
         </div>
@@ -54,14 +55,17 @@
             </el-carousel>
         </div>
         <div style="margin: 10px auto 0; width: 70%">
-            <el-row :gutter="5">
-                <el-col :span="6">
-                    <img :src="this.$url+files[0]" alt=""
-                         style="width: 100%;"/>
+            <el-row :gutter="10">
+                <el-col :span="6" v-for="item in files" :key="item.id" style="margin-bottom: 10px">
+                    <div style="padding-bottom: 10px; border: 1px solid #ccc">
+                        <img :src="fileUrl+item.pictureAddress" alt="" style="width: 100%;"/>
+                        <div style="color: #666; padding: 10px">{{item.commodityName}}</div>
+                        <div style="padding: 10px">
+                            <el-button type="primary">查看</el-button>
+                        </div>
+
+                    </div>
                 </el-col>
-                <el-col :span="6">1</el-col>
-                <el-col :span="6">1</el-col>
-                <el-col :span="6">1</el-col>
             </el-row>
         </div>
     </div>
@@ -74,6 +78,9 @@
         name: "FrontHome",
         data() {
             return {
+                pictureAddress: '',
+                commodityName: '',
+                fileUrl: '',
                 searchParameters: {
                     inputCondition: '',
                 },
@@ -81,7 +88,6 @@
                     {url: require('../assets/img1.jpg')},
                 ],
                 files: [],
-                pictureAddress: '',
             }
         },
         methods: {
@@ -91,12 +97,12 @@
             getList() {
                 listCommoditys(this.searchParameters).then(res => {
                     console.log(res.data);
-                    this.files = res.data.pictureAddress;
-                    console.log(this.files[0])
+                    this.files = res.data.filter(v => v.pictureAddress !== null)
                 })
             },
         },
         mounted() {
+            this.fileUrl = this.$url;
             this.getList();
         }
     }
