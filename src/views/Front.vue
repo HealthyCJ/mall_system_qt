@@ -38,7 +38,8 @@
             </div>
 
             <div class="right">
-                <el-input clearable @change='change()' placeholder="请输入关键字" style="width: 300px"
+                <!-- 输入不了 -待完善 -->
+                <el-input clearable placeholder="请输入关键字" style="width: 300px"
                           v-model="searchParameters.inputCondition"></el-input>
                 <el-button @click="search" icon="el-icon-search" size="medium" style="margin-left: 10px" type="primary">搜索
                 </el-button>
