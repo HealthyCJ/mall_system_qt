@@ -2,14 +2,7 @@
     <div class="container">
         <div style="width: 15%;"/>
         <div class="left">您好！欢迎来到购物商城</div>
-        <div style="flex: 1">
-            <!--<ul style="list-style: none; background-color: #98FB98">
-                <li class="item"><a href="/">菜单1</a></li>
-                <li class="item"><a href="/">菜单2</a></li>
-                <li class="item"><a href="/">菜单3</a></li>
-                <li class="item"><a href="/">菜单4</a></li>
-            </ul>-->
-        </div>
+        <div style="flex: 1"/>
         <div class="right" v-if="!user.userAccount">
             <el-button @click="$router.push('/login')">登陆</el-button>
             <el-button @click="$router.push('/register')">注册</el-button>
@@ -84,12 +77,12 @@
         background-color: #45454510;
     }
 
-    .left{
+    .left {
         width: 20%;
         text-align: left;
     }
 
-    .right{
+    .right {
         text-align: right;
         width: 20%;
         padding-right: 10px;
