@@ -34,9 +34,9 @@
                         </el-button>
 
                         <el-button
-                                @click="$router.push('/login')"
+                                @click="$router.push('/goods')"
                                 style="width: 175px;"
-                                type="warning">返回登录
+                                type="warning">返回首页
                         </el-button>
                     </el-form-item>
 

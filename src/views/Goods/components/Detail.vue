@@ -1,15 +1,16 @@
 <template>
-    <div class="container">
+    <div>
+        <!-- 导航栏 -->
         <div class="top">
             <div class="left">
-                <a @click="$router.push('/front')">
-                    <img src="../assets/sany-logo.png" class="logo" alt="">
+                <a @click="$router.push('/goods')">
+                    <img style="cursor: pointer" src="../../../assets/sany-logo.png" class="logo" alt="">
                 </a>
             </div>
 
             <div class="middle">
                 <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
-                    <el-menu-item index="1">首页</el-menu-item>
+                    <el-menu-item index="/goods">首页</el-menu-item>
                     <el-submenu index="2">
                         <template slot="title">主机</template>
                         <el-menu-item index="2-1">混凝土机械</el-menu-item>
@@ -39,81 +40,66 @@
 
             <div class="right">
                 <!-- 输入不了 -待完善 -->
-                <el-input clearable placeholder="请输入关键字" style="width: 300px"
-                          v-model="searchParameters.inputCondition"></el-input>
-                <el-button @click="search" icon="el-icon-search" size="medium" style="margin-left: 10px" type="primary">
+                <el-input clearable placeholder="请输入关键字" style="width: 300px"/>
+                <el-button icon="el-icon-search" size="medium" style="margin-left: 10px" type="primary">
                     搜索
                 </el-button>
             </div>
         </div>
+        <!-- 分割线 -->
         <div style="border-bottom: 1px solid #45454520; margin-top: 3px"></div>
-        <div class="body">
-            <el-carousel height="450PX" style="width: 70%; margin: 0 auto;">
-                <el-carousel-item v-for="item in imgs" :key="item.url">
-                    <img :src="item.url" alt="" style="width: 100%; height: 100%">
-                </el-carousel-item>
-            </el-carousel>
-        </div>
-        <div style="margin: 10px auto 0; width: 70%">
-            <el-row :gutter="10">
-                <el-col :span="6" v-for="item in files" :key="item.id" style="margin-bottom: 10px">
-                    <div style="padding-bottom: 10px; border: 1px solid #ccc">
-                        <img :src="fileUrl+item.pictureAddress" alt="" style="width: 100%;"/>
-                        <div style="color: #666; padding: 10px">{{item.commodityName}}</div>
-                        <div style="padding: 10px">
-                            <el-button type="primary">查看</el-button>
-                        </div>
 
+        <div style="background-color: #45454510; width: 100%; height: 100%; padding: 10px 0">
+            <el-card shadow="always" style="width: 70%; margin: 0 auto">
+                <div style="display: flex">
+                    <div style="width: 300px;">
+                        <el-image :src="fileUrl+commodity.pictureAddress" alt="" style="width: 100%; height: 100%"/>
                     </div>
-                </el-col>
-            </el-row>
+                    <div style="flex: 1; padding-left: 50px">
+                        <div class="commodity"><h3>{{commodity.commodityName}}</h3></div>
+                        <div class="commodity" style="font-size: 14px">{{commodity.commodityIntroduction}}</div>
+                        <div class="commodity" style="font-size: 14px; color: orangered">￥ {{commodity.commodityPrice}}元</div>
+                    </div>
+                </div>
+            </el-card>
         </div>
     </div>
 </template>
 
 <script>
-    import {listCommoditys} from "@/api/commodity";
+    import {getCommodity} from "@/api/commodity";
 
     export default {
-        name: "FrontHome",
+        name: "Detail",
         data() {
             return {
-                pictureAddress: '',
-                commodityName: '',
+                id: this.$route.query.id,
                 fileUrl: '',
-                searchParameters: {
-                    inputCondition: '',
-                },
-                imgs: [
-                    {url: require('../assets/img1.jpg')},
-                ],
-                files: [],
+                commodity: {
+                    commodityName: '',
+                    commodityType: '',
+                    commodityIntroduction: '',
+                    commodityPrice: '',
+                    inventoryQuantity: '',
+                    pictureAddress: '',
+                }
             }
         },
         methods: {
-            search() {
-                this.getList()
-            },
-            getList() {
-                listCommoditys(this.searchParameters).then(res => {
-                    console.log(res.data);
-                    this.files = res.data.filter(v => v.pictureAddress !== null)
+            getData() {
+                getCommodity({id: this.id}).then(res => {
+                    this.commodity = res.data;
                 })
-            },
+            }
         },
         mounted() {
             this.fileUrl = this.$url;
-            this.getList();
+            this.getData();
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .container {
-        margin: 0;
-        height: 0;
-    }
-
     .top {
         height: 10vh;
         width: 70%;
@@ -147,33 +133,7 @@
         float: right;
     }
 
-    .body {
-        /*height: 50vh;*/
-        width: 100%;
-        margin: 10px auto 0;
-    }
-
-    .el-dropdown-link {
-        cursor: pointer;
-    }
-
-    .el-icon-arrow-down {
-        font-size: 12px;
-    }
-
-    .el-carousel__item h3 {
-        color: #475669;
-        font-size: 14px;
-        opacity: 0.75;
-        line-height: 150px;
-        margin: 0;
-    }
-
-    .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-    }
-
-    .el-carousel__item:nth-child(2n+1) {
-        background-color: #d3dce6;
+    .commodity{
+        padding: 10px;
     }
 </style>

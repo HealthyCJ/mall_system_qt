@@ -11,7 +11,7 @@ let router = new Router({
             path: '/',
             name: 'Home',
             component: () => import('../layout/components/Home'),
-            redirect: '/front',
+            redirect: '/goods',
         },
         {
             path: '/login',
@@ -32,12 +32,17 @@ let router = new Router({
             path: '/home',
             name: 'Home',
             component: () => import('../layout/components/Home'),
-            redirect: '/front',
+            redirect: '/goods',
             children: [
                 {
-                    path: '/front',
-                    name: 'Front',
-                    component: () => import('../views/Front'),
+                    path: '/goods',
+                    name: 'Goods',
+                    component: () => import('../views/Goods/Goods'),
+                },
+                {
+                    path: '/detail',
+                    name: 'Detail',
+                    component: () => import('../views/Goods/components/Detail'),
                 },
             ]
         },
