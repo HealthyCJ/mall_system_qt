@@ -36,13 +36,13 @@ let router = new Router({
             children: [
                 {
                     path: '/goods',
-                    name: 'Goods',
-                    component: () => import('../views/Goods/Goods'),
+                    name: 'goods',
+                    component: () => import('../views/goods/Goods'),
                 },
                 {
                     path: '/detail',
                     name: 'Detail',
-                    component: () => import('../views/Goods/components/Detail'),
+                    component: () => import('../views/goods/components/Detail'),
                 },
             ]
         },

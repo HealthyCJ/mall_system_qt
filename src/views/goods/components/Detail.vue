@@ -87,7 +87,7 @@
 
 <script>
     import {getCommodity} from "@/api/commodity";
-    import CouponInsert from "@/views/Goods/components/components/CouponInsert";
+    import CouponInsert from "@/views/goods/components/components/CouponInsert";
 
     export default {
         name: "Detail",
