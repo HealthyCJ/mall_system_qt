@@ -16,24 +16,24 @@
                         <el-menu-item index="2-1">混凝土机械</el-menu-item>
                         <el-menu-item index="2-2">挖掘机械</el-menu-item>
                         <el-menu-item index="2-3">起重机械</el-menu-item>
-                        <el-submenu index="2-4">
+                        <!--<el-submenu index="2-4">
                             <template slot="title">港口机械</template>
                             <el-menu-item index="2-4-1">选项1</el-menu-item>
                             <el-menu-item index="2-4-2">选项2</el-menu-item>
                             <el-menu-item index="2-4-3">选项3</el-menu-item>
-                        </el-submenu>
+                        </el-submenu>-->
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">配件</template>
                         <el-menu-item index="3-1">混凝土配件</el-menu-item>
                         <el-menu-item index="3-2">挖掘机配件</el-menu-item>
                         <el-menu-item index="3-3">港口配件</el-menu-item>
-                        <el-submenu index="3-4">
+                        <!--<el-submenu index="3-4">
                             <template slot="title">自卸车</template>
                             <el-menu-item index="3-4-1">选项1</el-menu-item>
                             <el-menu-item index="3-4-2">选项2</el-menu-item>
                             <el-menu-item index="3-4-3">选项3</el-menu-item>
-                        </el-submenu>
+                        </el-submenu>-->
                     </el-submenu>
                 </el-menu>
             </div>
@@ -65,13 +65,15 @@
                             <img :src="fileUrl+item.pictureAddress" @click="$router.push('/detail?id='+item.id)" alt=""
                                  style="width: 100%; cursor: pointer"/>
                             <div style="padding: 14px;">
-                                <div class="commodity" style="color: #666; font-size: 18px;">
-                                    <b @click="$router.push('/detail?id='+item.id)">{{item.commodityName}}</b>
+                                <div @click="$router.push('/detail?id='+item.id)" class="commodity"
+                                     style="color: #666; font-size: 18px;">
+                                    <b>{{item.commodityName}}</b>
                                 </div>
-                                <div class="commodity">
+                                <div @click="$router.push('/detail?id='+item.id)" class="commodity">
                                     {{item.commodityIntroduction}}
                                 </div>
-                                <div class="commodity" style="color: orangered">
+                                <div @click="$router.push('/detail?id='+item.id)" class="commodity"
+                                     style="color: orangered">
                                     ￥{{item.commodityPrice}}元
                                 </div>
                                 <!--<div style="display:flex; justify-content:center; align-items:center;">
@@ -118,7 +120,6 @@
             },
             getList() {
                 listCommoditys(this.searchParameters).then(res => {
-                    console.log(res.data);
                     this.files = res.data.filter(v => v.pictureAddress !== null)
                 })
             },
@@ -132,7 +133,6 @@
 
 <style lang="scss" scoped>
     .container {
-        margin-bottom: 100px;
     }
 
     .top {
