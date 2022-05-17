@@ -9,13 +9,13 @@
             </div>
 
             <div class="middle">
-                <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal">
+                <el-menu :default-active="'1'" class="el-menu-demo" mode="horizontal" router>
                     <el-menu-item index="/goods">首页</el-menu-item>
                     <el-submenu index="2">
                         <template slot="title">主机</template>
-                        <el-menu-item index="2-1">混凝土机械</el-menu-item>
-                        <el-menu-item index="2-2">挖掘机械</el-menu-item>
-                        <el-menu-item index="2-3">起重机械</el-menu-item>
+                        <el-menu-item index="/goods">混凝土机械</el-menu-item>
+                        <el-menu-item index="/goods">挖掘机械</el-menu-item>
+                        <el-menu-item index="/goods">起重机械</el-menu-item>
                         <!--<el-submenu index="2-4">
                             <template slot="title">港口机械</template>
                             <el-menu-item index="2-4-1">选项1</el-menu-item>
@@ -25,9 +25,9 @@
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">配件</template>
-                        <el-menu-item index="3-1">混凝土配件</el-menu-item>
-                        <el-menu-item index="3-2">挖掘机配件</el-menu-item>
-                        <el-menu-item index="3-3">港口配件</el-menu-item>
+                        <el-menu-item index="/goods">混凝土配件</el-menu-item>
+                        <el-menu-item index="/goods">挖掘机配件</el-menu-item>
+                        <el-menu-item index="/goods">港口配件</el-menu-item>
                         <!--<el-submenu index="3-4">
                             <template slot="title">自卸车</template>
                             <el-menu-item index="3-4-1">选项1</el-menu-item>
@@ -76,14 +76,6 @@
                                      style="color: orangered">
                                     ￥{{item.commodityPrice}}元
                                 </div>
-                                <!--<div style="display:flex; justify-content:center; align-items:center;">
-                                    <el-button plain style="width: 95px; text-align: center; font-size: 12px"
-                                               type="danger">购买
-                                    </el-button>
-                                    <el-button plain style="width: 95px; text-align: center; font-size: 12px"
-                                               type="info">加入购物车
-                                    </el-button>
-                                </div>-->
                             </div>
                         </el-card>
                     </el-col>

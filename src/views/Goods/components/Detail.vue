@@ -13,9 +13,9 @@
                     <el-menu-item index="/goods">首页</el-menu-item>
                     <el-submenu index="2">
                         <template slot="title">主机</template>
-                        <el-menu-item index="2-1">混凝土机械</el-menu-item>
-                        <el-menu-item index="2-2">挖掘机械</el-menu-item>
-                        <el-menu-item index="2-3">起重机械</el-menu-item>
+                        <el-menu-item index="/goods">混凝土机械</el-menu-item>
+                        <el-menu-item index="/goods">挖掘机械</el-menu-item>
+                        <el-menu-item index="/goods">起重机械</el-menu-item>
                         <!--<el-submenu index="2-4">
                             <template slot="title">港口机械</template>
                             <el-menu-item index="2-4-1">选项1</el-menu-item>
@@ -25,9 +25,9 @@
                     </el-submenu>
                     <el-submenu index="3">
                         <template slot="title">配件</template>
-                        <el-menu-item index="3-1">混凝土配件</el-menu-item>
-                        <el-menu-item index="3-2">挖掘机配件</el-menu-item>
-                        <el-menu-item index="3-3">港口配件</el-menu-item>
+                        <el-menu-item index="/goods">混凝土配件</el-menu-item>
+                        <el-menu-item index="/goods">挖掘机配件</el-menu-item>
+                        <el-menu-item index="/goods">港口配件</el-menu-item>
                         <!--<el-submenu index="3-4">
                             <template slot="title">自卸车</template>
                             <el-menu-item index="3-4-1">选项1</el-menu-item>
@@ -49,12 +49,12 @@
         <!-- 分割线 -->
         <div style="border-bottom: 1px solid #45454520; margin-top: 3px"></div>
 
-        <div style="background-color: #45454510; width: 100%; height: 100%; padding: 10px 0">
+        <div style="padding: 10px 0">
             <el-card shadow="always" style="width: 70%; margin: 0 auto" v-loading="loading">
                 <div style="display: flex">
-                    <div style="width: 300px;">
+                    <div style="width: 400px;">
                         <img :src="fileUrl+commodity.pictureAddress" alt=""
-                             style="width: 100%; height: 100%"/>
+                             style="width: 100%;"/>
                     </div>
                     <div style="flex: 1; padding-left: 50px">
                         <div class="commodity"><h3>{{commodity.commodityName}}</h3></div>
@@ -65,30 +65,42 @@
                         </div>
                         <div v-else class="commodity">库存：100+</div>
                         <div class="commodity">
-                            <el-input-number v-model="form.nums" :min="1" :max="100" label="描述文字"></el-input-number>
+                            <el-input-number v-model="nums" :min="1" :max="100" label="描述文字"></el-input-number>
                             <span style="margin-left: 10px">件</span>
                         </div>
                         <div class="commodity">
-                            <el-button plain style="width: 150px;" type="danger">立即购买</el-button>
-                            <!--<el-button icon="el-icon-shopping-cart-2" plain style="width: 150px;" type="info">加入购物车</el-button>-->
+                            <el-button @click="handleEdit" plain style="width: 150px;" type="danger">立即购买</el-button>
+                            <!-- 购物车功能 - 待完善-->
+                            <el-button icon="el-icon-shopping-cart-2" plain style="width: 150px;"
+                                       type="info">加入购物车
+                            </el-button>
                         </div>
                     </div>
                 </div>
             </el-card>
         </div>
+        <CouponInsert :editDialogRow="editDialog.editDialogRow" :isEditShow="editDialog.editShow"
+                      @closeEditDialog="hideEditDialog"
+                      v-if="editDialog.editShow"/>
     </div>
 </template>
 
 <script>
     import {getCommodity} from "@/api/commodity";
+    import CouponInsert from "@/views/Goods/components/components/CouponInsert";
 
     export default {
         name: "Detail",
+        components: {
+            CouponInsert,
+        },
         data() {
             return {
                 id: this.$route.query.id,
                 fileUrl: '',
+                nums: 1,
                 commodity: {
+                    id: '',
                     commodityName: '',
                     commodityType: '',
                     commodityIntroduction: '',
@@ -96,10 +108,11 @@
                     inventoryQuantity: '',
                     pictureAddress: '',
                 },
+                editDialog: {
+                    editShow: false,
+                    editDialogRow: {}
+                },
                 loading: true,
-                form: {
-                    nums: 1,
-                }
             }
         },
         methods: {
@@ -108,7 +121,26 @@
                     this.commodity = res.data;
                     this.loading = false;
                 })
-            }
+            },
+
+            handleEdit() {
+                let user = JSON.parse(localStorage.getItem("user"));
+                if (user) {
+                    this.editDialog.editDialogRow = this.commodity;
+                    this.editDialog.editShow = true;
+                } else {
+                    this.$router.push('/login');
+                    this.$message({
+                        message: '请登陆！',
+                        type: 'warning'
+                    });
+                }
+            },
+
+            // 子组件隐藏Dialog对话框回调函数
+            hideEditDialog() {
+                this.editDialog.editShow = false;
+            },
         },
         mounted() {
             this.fileUrl = this.$url;
