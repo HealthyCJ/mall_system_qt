@@ -39,10 +39,10 @@
 
         <div class="Address">
             <div>
-                <div style="padding-bottom: 10px;">
+                <div style="padding-bottom: 10px; border: 2px solid white">
                     <el-button @click="insertAddress"
                                icon="el-icon-circle-plus-outline" size="medium"
-                               type="warning">新增
+                               type="warning">新增收货地址
                     </el-button>
                 </div>
                 <el-table
@@ -56,7 +56,8 @@
                     <el-table-column
                             label="序号"
                             prop="id"
-                            show-overflow-tooltip>
+                            show-overflow-tooltip
+                            sortable>
                     </el-table-column>
                     <el-table-column
                             label="联系电话"
