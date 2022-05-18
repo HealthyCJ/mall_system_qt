@@ -84,7 +84,7 @@
     import {getUser, updateUser} from "@/api/user";
 
     export default {
-        name: "Person",
+        name: "Address",
         data() {
             return {
                 form: {

@@ -44,6 +44,26 @@ let router = new Router({
                     name: 'Detail',
                     component: () => import('../views/goods/components/Detail'),
                 },
+                {
+                    path: '/person',
+                    name: 'Person',
+                    component: () => import('../views/person/Person'),
+                },
+                {
+                    path: '/password',
+                    name: 'Password',
+                    component: () => import('../views/person/Password'),
+                },
+                {
+                    path: '/orders',
+                    name: 'Orders',
+                    component: () => import('../views/person/Orders'),
+                },
+                {
+                    path: '/address',
+                    name: 'Address',
+                    component: () => import('../views/person/Address'),
+                },
             ]
         },
     ]

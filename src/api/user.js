@@ -27,19 +27,6 @@ export function getUser(data) {
 }
 
 /**
- * 查看用户信息
- * @param data
- * @returns {AxiosPromise}
- */
-export function listUsers(data) {
-    return request({
-        url: '/system/user/listUsers',
-        method: 'post',
-        data
-    })
-}
-
-/**
  * 新增用户信息
  * @param data
  * @returns {AxiosPromise}
@@ -48,19 +35,6 @@ export function insertUser(data) {
     return request({
         url: '/system/user/user',
         method: 'post',
-        data
-    })
-}
-
-/**
- * 删除用户信息
- * @param data
- * @returns {AxiosPromise}
- */
-export function deleteUser(data) {
-    return request({
-        url: '/system/user/user/' + data.id,
-        method: 'delete',
         data
     })
 }

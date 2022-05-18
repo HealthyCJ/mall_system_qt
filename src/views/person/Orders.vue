@@ -39,21 +39,6 @@
 
         <el-card class="Person" shadow="always">
             <el-form ref="form" :model="form" label-width="80px">
-                <div style="text-align: center; margin-bottom: 10px">
-                    <el-upload
-                            :auto-upload="false"
-                            :on-change="uploadFile"
-                            :show-file-list="false"
-                            action="#"
-                            class="avatar-uploader">
-                        <el-image
-                                v-if="form.pictureAddress"
-                                :fit="fit"
-                                :src="fileUrl+form.pictureAddress"
-                                style="width: 100px; height: 100px"></el-image>
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </div>
                 <el-form-item label="用户账号">
                     <el-input :disabled="true" v-model="form.userAccount"></el-input>
                 </el-form-item>
@@ -84,7 +69,7 @@
     import {getUser, updateUser} from "@/api/user";
 
     export default {
-        name: "Person",
+        name: "Orders",
         data() {
             return {
                 form: {

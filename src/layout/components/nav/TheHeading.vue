@@ -16,8 +16,10 @@
                     <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click="$router.push('/person')">个人中心</el-dropdown-item>
-                    <el-dropdown-item>修改密码</el-dropdown-item>
+                    <el-dropdown-item @click.native="person">个人中心</el-dropdown-item>
+                    <el-dropdown-item @click.native="password">修改密码</el-dropdown-item>
+                    <el-dropdown-item @click.native="orders">我的订单</el-dropdown-item>
+                    <el-dropdown-item @click.native="address">我的地址</el-dropdown-item>
                     <el-dropdown-item @click.native="exit">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -48,6 +50,23 @@
                 }
 
             },
+
+            person(){
+                this.$router.push('/person');
+            },
+
+            password(){
+                this.$router.push('/password');
+            },
+
+            orders(){
+                this.$router.push('/orders');
+            },
+
+            address(){
+                this.$router.push('/address');
+            },
+
             exit() {
                 this.$confirm('确认退出吗?', '提示', {
                     type: 'warning'
