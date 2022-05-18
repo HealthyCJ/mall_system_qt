@@ -26,7 +26,7 @@
                     // 当前位于哪页
                     pageIndex: 1,
                     // 1页显示多少条
-                    pageSize: 10,
+                    pageSize: 5,
                     // 每页显示多少条
                     pageSizes: [5, 10, 15, 20],
                     // 翻页属性

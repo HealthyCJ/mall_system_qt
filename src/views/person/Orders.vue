@@ -37,119 +37,158 @@
         <!-- 分割线 -->
         <div style="border-bottom: 1px solid #45454520; margin-top: 3px"></div>
 
-        <el-card class="Person" shadow="always">
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="用户账号">
-                    <el-input :disabled="true" v-model="form.userAccount"></el-input>
-                </el-form-item>
-                <el-form-item label="用户姓名">
-                    <el-input v-model="form.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="个性签名">
-                    <el-input type="textarea" v-model="form.userIntroduction"></el-input>
-                </el-form-item>
-                <!--修改密码 - 待完善-->
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.userGender">
-                        <el-radio :label="1">男</el-radio>
-                        <el-radio :label="2">女</el-radio>
-                        <el-radio :label="3">未知</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item style="margin-bottom: 10px">
-                    <el-button type="primary" @click="onSubmit(form)">修改</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+        <div class="Orders">
+            <div class="body">
+                <!--利润统计，做报表待完善 - 待完善-->
+                <el-table
+                        :data="tableData"
+                        border
+                        highlight-current-row
+                        size="medium"
+                        stripe
+                        style="width: 100%"
+                        v-loading="loading">
+                    <el-table-column
+                            label="商品名称"
+                            prop="commodityName"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                            label="购买数量（件）"
+                            prop="nums"
+                            show-overflow-tooltip
+                            sortable>
+                    </el-table-column>
+                    <el-table-column
+                            label="总计价格（元）"
+                            prop="total"
+                            show-overflow-tooltip
+                            sortable>
+                    </el-table-column>
+                    <el-table-column
+                            label="联系电话"
+                            prop="telephoneNumber"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                            label="收货地址"
+                            prop="receivingAddress"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                            label="下单日期"
+                            prop="createTime"
+                            show-overflow-tooltip
+                            sortable>
+                    </el-table-column>
+                    <el-table-column
+                            :formatter="refundFormatter"
+                            label="是否退款"
+                            prop="isRefund"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column prop="pictureAddress" label="商品图片" align="center">
+                        <template slot-scope="scope">
+                            <el-image
+                                    :fit="fit"
+                                    :src="fileUrl+scope.row.pictureAddress"
+                                    style="width: 100px; height: 100px"></el-image>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click="applyForRefund(scope.row)"
+                                    icon="el-icon-circle-check"
+                                    size="mini" type="primary">退货
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="pagination">
+                <Pagination :pageTotal="pageTotal"
+                            @handleCurrentChange="handleCurrentChange"
+                            @handleSizeChange="handleSizeChange"/>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import {deleteFile, uploadFile} from "@/api/file";
-    import {getUser, updateUser} from "@/api/user";
+
+    import Pagination from "../../components/pagination";
+    import {listCoupons} from "@/api/coupon";
 
     export default {
         name: "Orders",
+        components: {
+            Pagination,
+        },
         data() {
             return {
-                form: {
-                    userName: '',
-                    userAccount: '',
-                    userGender: '',
-                    userIntroduction: '',
-                    pictureAddress: '',
+                tableData: [],
+                searchParameters: {
+                    userId: '',
+                    pageNum: 0,
+                    pageSize: 5
                 },
+                pageTotal: 0,
                 fit: "contain",
                 fileUrl: '',
+                loading: true,
+                refundOptions: [
+                    {
+                        code: 0,
+                        name: '不退款'
+                    },
+                    {
+                        code: 1,
+                        name: '退款'
+                    }
+                ],
                 user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
             }
         },
         methods: {
-            // 做个假的修改密码 - 待完善
-
             // 获取页面数据
-            getData() {
-                getUser({userAccount: this.user.userAccount}).then(res => {
-                    if (res.code === 10000) {
-                        this.form = res.data;
-                    }
+            getList() {
+                this.searchParameters.userId = JSON.parse(localStorage.getItem("user")).userId;
+                listCoupons(this.searchParameters).then(res => {
+                    this.pageTotal = res.data.total;
+                    this.tableData = res.data.rows;
+                    this.loading = false;
                 })
             },
 
-            // 提交表单
-            onSubmit() {
-                this.$confirm('确认修改？', '提示', {
-                    type: 'warning'
-                }).then(() => {
-                    updateUser(this.form).then(res => {
-                        if (res.code === 10000) {
-                            this.$message({
-                                message: '修改成功',
-                                type: 'success'
-                            });
-                        }
-                        this.getData();
-                        // 自动更新 - 待完善
-                        location.reload();
-                    });
-                }).catch(() => {
-                });
+            applyForRefund() {
             },
 
-            // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
-            uploadFile(file) {
-                if (file.raw) {
-                    this.file = file.raw;
-                    let formdata = new FormData();
-                    formdata.append("file", this.file);
-                    uploadFile(formdata).then(res => {
-                        this.form.pictureAddress = res.data;
-                        if (res.code === 10000) {
-                            this.$message({
-                                message: '上传成功',
-                                type: 'success'
-                            });
-                        }
-                    })
-                }
+            // 上下分页
+            handleCurrentChange(val) {
+                this.searchParameters.pageNum = val;
+                this.getList();
             },
 
-            // 文件列表移除文件时的钩子
-            deleteFile(fileUrl) {
-                fileUrl = this.form.pictureAddress;
-                deleteFile(fileUrl).then(res => {
-                    if (res.code === 10000) {
-                        this.$message({
-                            message: '移除成功',
-                            type: 'success'
-                        });
+            // 每页显示多少条
+            handleSizeChange(val) {
+                this.searchParameters.pageSize = val;
+                this.getList();
+            },
+
+            refundFormatter(row) {
+                let data = '';
+                this.refundOptions.forEach((item) => {
+                    if (row.isRefund === item.code) {
+                        data = item.name;
                     }
                 })
+                return data;
             },
         },
         mounted() {
-            this.getData();
             this.fileUrl = this.$url;
+            this.getList();
         }
     }
 </script>
@@ -191,9 +230,9 @@
         float: right;
     }
 
-    .Person {
+    .Orders {
         margin: 0 auto;
-        width: 500px;
+        width: 71%;
         padding: 10px;
     }
 
