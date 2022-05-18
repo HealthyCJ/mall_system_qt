@@ -37,134 +37,153 @@
         <!-- 分割线 -->
         <div style="border-bottom: 1px solid #45454520; margin-top: 3px"></div>
 
-        <el-card class="Person" shadow="always">
-            <el-form ref="form" :model="form" label-width="80px">
-                <div style="text-align: center; margin-bottom: 10px">
-                    <el-upload
-                            :auto-upload="false"
-                            :on-change="uploadFile"
-                            :show-file-list="false"
-                            action="#"
-                            class="avatar-uploader">
-                        <el-image
-                                v-if="form.pictureAddress"
-                                :fit="fit"
-                                :src="fileUrl+form.pictureAddress"
-                                style="width: 100px; height: 100px"></el-image>
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+        <div class="Address">
+            <div>
+                <div style="padding-bottom: 10px;">
+                    <el-button @click="insertAddress"
+                               icon="el-icon-circle-plus-outline" size="medium"
+                               type="warning">新增
+                    </el-button>
                 </div>
-                <el-form-item label="用户账号">
-                    <el-input :disabled="true" v-model="form.userAccount"></el-input>
-                </el-form-item>
-                <el-form-item label="用户姓名">
-                    <el-input v-model="form.userName"></el-input>
-                </el-form-item>
-                <el-form-item label="个性签名">
-                    <el-input type="textarea" v-model="form.userIntroduction"></el-input>
-                </el-form-item>
-                <!--修改密码 - 待完善-->
-                <el-form-item label="性别">
-                    <el-radio-group v-model="form.userGender">
-                        <el-radio :label="1">男</el-radio>
-                        <el-radio :label="2">女</el-radio>
-                        <el-radio :label="3">未知</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item style="margin-bottom: 10px">
-                    <el-button type="primary" @click="onSubmit(form)">修改</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+                <el-table
+                        :data="tableData"
+                        border
+                        highlight-current-row
+                        size="medium"
+                        stripe
+                        style="width: 100%"
+                        v-loading="loading">
+                    <el-table-column
+                            label="序号"
+                            prop="id"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                            label="联系电话"
+                            prop="telephoneNumber"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                            label="收货地址"
+                            prop="receivingAddress"
+                            show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click="handleEdit(scope.row)"
+                                    icon="el-icon-edit"
+                                    size="mini" type="primary">修改
+                            </el-button>
+                            <el-button
+                                    @click="handleDelete(scope.row)"
+                                    icon="el-icon-delete"
+                                    size="mini" type="danger">删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <!--@closeDialog子传父调用函数-->
+            <AddressInsert :insertDialogRow="insertDialog.insertDialogRow" :isInsertShow="insertDialog.insertShow"
+                           @closeInsertDialog="hideInsertDialog"
+                           v-if="insertDialog.insertShow"/>
+            <AddressEdit :editDialogRow="editDialog.editDialogRow" :isEditShow="editDialog.editShow"
+                         @closeEditDialog="hideEditDialog"
+                         v-if="editDialog.editShow"/>
+        </div>
     </div>
 </template>
 
 <script>
-    import {deleteFile, uploadFile} from "@/api/file";
-    import {getUser, updateUser} from "@/api/user";
+    import AddressInsert from "@/views/person/components/AddressInsert";
+    import AddressEdit from "@/views/person/components/AddressEdit";
+    import {deleteAddress, getAddress} from "@/api/address";
 
     export default {
         name: "Address",
+        components: {
+            AddressInsert,
+            AddressEdit,
+        },
         data() {
             return {
-                form: {
-                    userName: '',
-                    userAccount: '',
-                    userGender: '',
-                    userIntroduction: '',
-                    pictureAddress: '',
+                tableData: [],
+                pageTotal: 10,
+                insertDialog: {
+                    insertShow: false,
+                    insertDialogRow: {}
                 },
-                fit: "contain",
-                fileUrl: '',
-                user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {},
+                editDialog: {
+                    editShow: false,
+                    editDialogRow: {}
+                },
+                loading: true,
             }
         },
         methods: {
-            // 做个假的修改密码 - 待完善
-
-            // 获取页面数据
-            getData() {
-                getUser({userAccount: this.user.userAccount}).then(res => {
-                    if (res.code === 10000) {
-                        this.form = res.data;
-                    }
+            getList() {
+                let id = JSON.parse(localStorage.getItem("user")).id;
+                getAddress({id: id}).then(res => {
+                    this.tableData = res.data;
+                    this.loading = false;
                 })
             },
 
-            // 提交表单
-            onSubmit() {
-                this.$confirm('确认修改？', '提示', {
+            insertAddress() {
+                this.insertDialog.insertShow = true;
+            },
+
+            // 子组件隐藏Dialog对话框回调函数
+            hideInsertDialog() {
+                this.insertDialog.insertShow = false;
+            },
+
+            handleEdit(row) {
+                this.editDialog.editDialogRow = {...row};
+                this.editDialog.editShow = true;
+            },
+
+            // 子组件隐藏Dialog对话框回调函数
+            hideEditDialog() {
+                this.editDialog.editShow = false;
+            },
+
+            handleDelete(row) {
+                this.$confirm('确认删除该收货地址信息吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    updateUser(this.form).then(res => {
+                    deleteAddress({id: row.id}).then(res => {
                         if (res.code === 10000) {
                             this.$message({
-                                message: '修改成功',
+                                message: '删除成功',
                                 type: 'success'
                             });
+                            this.getList()
                         }
-                        this.getData();
-                        // 自动更新 - 待完善
-                        location.reload();
-                    });
+                    })
                 }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
                 });
             },
 
-            // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
-            uploadFile(file) {
-                if (file.raw) {
-                    this.file = file.raw;
-                    let formdata = new FormData();
-                    formdata.append("file", this.file);
-                    uploadFile(formdata).then(res => {
-                        this.form.pictureAddress = res.data;
-                        if (res.code === 10000) {
-                            this.$message({
-                                message: '上传成功',
-                                type: 'success'
-                            });
-                        }
-                    })
-                }
+            // 上下分页
+            handleCurrentChange(val) {
+                this.searchParameters.pageNum = val;
+                this.getList();
             },
 
-            // 文件列表移除文件时的钩子
-            deleteFile(fileUrl) {
-                fileUrl = this.form.pictureAddress;
-                deleteFile(fileUrl).then(res => {
-                    if (res.code === 10000) {
-                        this.$message({
-                            message: '移除成功',
-                            type: 'success'
-                        });
-                    }
-                })
+            // 每页显示多少条
+            handleSizeChange(val) {
+                this.searchParameters.pageSize = val;
+                this.getList();
             },
         },
         mounted() {
-            this.getData();
-            this.fileUrl = this.$url;
+            this.getList();
         }
     }
 </script>
@@ -245,5 +264,11 @@
         width: 178px;
         height: 178px;
         display: block;
+    }
+
+    .Address {
+        margin: 0 auto;
+        width: 71%;
+        padding: 10px;
     }
 </style>
