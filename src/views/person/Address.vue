@@ -53,12 +53,12 @@
                         stripe
                         style="width: 100%"
                         v-loading="loading">
-                    <el-table-column
+                    <!--<el-table-column
                             label="序号"
                             prop="id"
                             show-overflow-tooltip
                             sortable>
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             label="联系电话"
                             prop="telephoneNumber"

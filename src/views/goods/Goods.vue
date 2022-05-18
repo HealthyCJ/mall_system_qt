@@ -61,19 +61,20 @@
             <div style="margin: 10px auto 0; width: 70%;">
                 <el-row :gutter="10">
                     <el-col :span="6" v-for="item in files" :key="item.id" style="margin-bottom: 10px">
-                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }" style="height: 420px">
                             <img :src="fileUrl+item.pictureAddress" @click="$router.push('/detail?id='+item.id)" alt=""
                                  style="width: 100%; cursor: pointer"/>
                             <div style="padding: 14px;">
                                 <div @click="$router.push('/detail?id='+item.id)" class="commodity"
-                                     style="color: #666; font-size: 18px;">
+                                     style="color: #666; font-size: 18px; height: 80px; padding-top: 10px">
                                     <b>{{item.commodityName}}</b>
                                 </div>
-                                <div @click="$router.push('/detail?id='+item.id)" class="commodity">
+                                <div @click="$router.push('/detail?id='+item.id)" class="commodity"
+                                     style="height: 70px; padding-top: 10px">
                                     {{item.commodityIntroduction}}
                                 </div>
                                 <div @click="$router.push('/detail?id='+item.id)" class="commodity"
-                                     style="color: orangered">
+                                     style="color: orangered; padding-top: 10px">
                                     ￥{{item.commodityPrice}}元
                                 </div>
                             </div>
@@ -189,7 +190,7 @@
         background-color: #d3dce6;
     }
 
-    .commodity{
+    .commodity {
         color: #666;
         padding: 10px;
         font-size: 14px;

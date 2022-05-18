@@ -50,6 +50,7 @@
                     commodityIntroduction: '',
                     commodityPrice: '',
                     purchasePrice: '',
+                    inventoryQuantity:'',
                     nums: '',
                     total: '',
                     profit: '',

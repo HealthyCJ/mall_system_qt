@@ -8,7 +8,7 @@
                     </div>
                     <!--注册只要员工姓名，工号后台默认生成 - 待完善-->
                     <el-form-item prop="userAccount">
-                        <el-input autocomplete="off" placeholder="请输入员工工号" prefix-icon="el-icon-user-solid" type="text"
+                        <el-input autocomplete="off" placeholder="请输入用户账号" prefix-icon="el-icon-user-solid" type="text"
                                   v-model="registerForm.userAccount"></el-input>
                     </el-form-item>
 

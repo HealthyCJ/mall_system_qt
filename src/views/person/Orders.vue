@@ -54,13 +54,13 @@
                             show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column
-                            label="购买数量（件）"
+                            label="购买数量"
                             prop="nums"
                             show-overflow-tooltip
                             sortable>
                     </el-table-column>
                     <el-table-column
-                            label="总计价格（元）"
+                            label="总计价格"
                             prop="total"
                             show-overflow-tooltip
                             sortable>
