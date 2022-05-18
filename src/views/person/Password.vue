@@ -107,7 +107,7 @@
             }
         },
         methods: {
-            // 做个假的修改密码 - 待完善
+            // 修改密码 - 待完善
             updatePwd() {
                 this.$router.push('/login');
                 this.$message({

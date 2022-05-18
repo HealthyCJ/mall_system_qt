@@ -39,7 +39,6 @@
 
         <div class="Orders">
             <div class="body">
-                <!--利润统计，做报表待完善 - 待完善-->
                 <el-table
                         :data="tableData"
                         border
@@ -98,9 +97,15 @@
                     <el-table-column label="操作">
                         <template slot-scope="scope">
                             <el-button
+                                    style="margin-left: 10px;margin-bottom: 10px"
                                     @click="handleEdit(scope.row)"
                                     icon="el-icon-circle-check"
                                     size="mini" type="primary">退货
+                            </el-button>
+                            <el-button
+                                    @click="handleDelete"
+                                    icon="el-icon-delete"
+                                    size="mini" type="danger">删除
                             </el-button>
                         </template>
                     </el-table-column>
@@ -112,8 +117,8 @@
                             @handleSizeChange="handleSizeChange"/>
             </div>
             <Refund :editDialogRow="editDialog.editDialogRow" :isEditShow="editDialog.editShow"
-                           @closeEditDialog="hideEditDialog"
-                           v-if="editDialog.editShow"/>
+                    @closeEditDialog="hideEditDialog"
+                    v-if="editDialog.editShow"/>
         </div>
     </div>
 </template>
@@ -178,6 +183,24 @@
             // 子组件隐藏Dialog对话框回调函数
             hideEditDialog() {
                 this.editDialog.editShow = false;
+            },
+
+
+            handleDelete() {
+                this.$confirm('确认删除订单信息吗?', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    this.getList()
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
 
             // 上下分页

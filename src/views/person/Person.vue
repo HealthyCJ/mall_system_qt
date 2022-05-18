@@ -63,7 +63,6 @@
                 <el-form-item label="个性签名">
                     <el-input type="textarea" v-model="form.userIntroduction"></el-input>
                 </el-form-item>
-                <!--修改密码 - 待完善-->
                 <el-form-item label="性别">
                     <el-radio-group v-model="form.userGender">
                         <el-radio :label="1">男</el-radio>
@@ -100,8 +99,6 @@
             }
         },
         methods: {
-            // 做个假的修改密码 - 待完善
-
             // 获取页面数据
             getData() {
                 getUser({userAccount: this.user.userAccount}).then(res => {

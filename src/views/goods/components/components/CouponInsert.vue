@@ -4,7 +4,6 @@
             :title="'确认订单信息'"
             :visible.sync="dialogVisible"
             top="8vh">
-        <!-- rules无效 - 待完善-->
         <el-form :model="form" :rules="rules" label-width="80px" ref="form">
             <el-form-item label="商品名称">
                 {{form.commodityIntroduction}}
@@ -85,8 +84,8 @@
                     }
                 ],
                 rules: {
-                    receivingAddress: [{required: true, message: '请选择收货地址', trigger: 'blur'}],
-                    telephoneNumber: [{required: true, message: '请输入联系电话', trigger: 'blur'}]
+                    telephoneNumber: [{required: true, message: '请输入联系电话', trigger: 'blur'}],
+                    receivingAddress: [{required: true, message: '请选择收货地址', trigger: 'change'}],
                 },
                 dialogVisible: this.isEditShow,
                 loading: true,
@@ -95,16 +94,24 @@
         methods: {
             // 提交表单
             onSubmit() {
-                this.form.userId = JSON.parse(localStorage.getItem("user")).id;
-                this.form.userName = JSON.parse(localStorage.getItem("user")).userName;
-                insertCoupon(this.form).then(res =>{
-                    if (res.code === 10000) {
-                        this.$message({
-                            message: '购买成功',
-                            type: 'success'
-                        });
+                this.$refs.form.validate(valid => {
+                    if (valid) {
+                        this.$confirm('确认购买？', '提示', {
+                            type: 'warning'
+                        }).then(() => {
+                            this.form.userId = JSON.parse(localStorage.getItem("user")).id;
+                            this.form.userName = JSON.parse(localStorage.getItem("user")).userName;
+                            insertCoupon(this.form).then(res => {
+                                if (res.code === 10000) {
+                                    this.$message({
+                                        message: '购买成功',
+                                        type: 'success'
+                                    });
+                                }
+                            });
+                            this.$emit('closeEditDialog');
+                        })
                     }
-                    this.$emit('closeEditDialog');
                 })
             },
 
