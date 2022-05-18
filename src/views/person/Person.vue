@@ -55,7 +55,7 @@
                     </el-upload>
                 </div>
                 <el-form-item label="用户账号">
-                    <el-input :disabled="true" v-model="form.userAccount"></el-input>
+                    {{form.userAccount}}
                 </el-form-item>
                 <el-form-item label="用户姓名">
                     <el-input v-model="form.userName"></el-input>

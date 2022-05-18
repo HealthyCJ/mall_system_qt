@@ -98,7 +98,7 @@
                     <el-table-column label="操作">
                         <template slot-scope="scope">
                             <el-button
-                                    @click="applyForRefund(scope.row)"
+                                    @click="handleEdit(scope.row)"
                                     icon="el-icon-circle-check"
                                     size="mini" type="primary">退货
                             </el-button>
@@ -111,6 +111,9 @@
                             @handleCurrentChange="handleCurrentChange"
                             @handleSizeChange="handleSizeChange"/>
             </div>
+            <Refund :editDialogRow="editDialog.editDialogRow" :isEditShow="editDialog.editShow"
+                           @closeEditDialog="hideEditDialog"
+                           v-if="editDialog.editShow"/>
         </div>
     </div>
 </template>
@@ -119,11 +122,13 @@
 
     import Pagination from "../../components/pagination";
     import {listCoupons} from "@/api/coupon";
+    import Refund from "@/views/person/components/Refund";
 
     export default {
         name: "Orders",
         components: {
             Pagination,
+            Refund
         },
         data() {
             return {
@@ -132,6 +137,10 @@
                     userId: '',
                     pageNum: 0,
                     pageSize: 5
+                },
+                editDialog: {
+                    editShow: false,
+                    editDialogRow: {}
                 },
                 pageTotal: 0,
                 fit: "contain",
@@ -161,7 +170,14 @@
                 })
             },
 
-            applyForRefund() {
+            handleEdit(row) {
+                this.editDialog.editDialogRow = {...row};
+                this.editDialog.editShow = true;
+            },
+
+            // 子组件隐藏Dialog对话框回调函数
+            hideEditDialog() {
+                this.editDialog.editShow = false;
             },
 
             // 上下分页

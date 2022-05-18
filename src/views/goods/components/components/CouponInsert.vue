@@ -3,17 +3,17 @@
             :before-close="handleClose"
             :title="'确认订单信息'"
             :visible.sync="dialogVisible"
-            width="50%">
+            top="8vh">
         <!-- rules无效 - 待完善-->
         <el-form :model="form" :rules="rules" label-width="80px" ref="form">
             <el-form-item label="商品名称">
-                <el-input :disabled="true" v-model="form.commodityIntroduction"></el-input>
+                {{form.commodityIntroduction}}
             </el-form-item>
             <el-form-item label="商品介绍">
-                <el-input :disabled="true" type="textarea" v-model="form.commodityIntroduction"></el-input>
+                {{form.commodityIntroduction}}
             </el-form-item>
             <el-form-item label="商品售价">
-                <el-input :disabled="true" v-model="form.commodityPrice"></el-input>
+                {{form.commodityPrice}}
             </el-form-item>
             <el-form-item label="联系电话" prop="telephoneNumber">
                 <el-input v-model="form.telephoneNumber"></el-input>
