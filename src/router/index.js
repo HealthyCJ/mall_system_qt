@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueRouter from "vue-router";
 
 Vue.use(Router);
 
 // 配置导出路由
-let router = new Router({
-    // 地址、订单、退货、个人中心、修改密码）
-    routes: [
+const routes=[
         {
             path: '/',
             name: 'Home',
@@ -67,6 +66,11 @@ let router = new Router({
             ]
         },
     ]
-});
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
 
 export default router

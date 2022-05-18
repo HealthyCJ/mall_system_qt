@@ -167,8 +167,9 @@
         methods: {
             // 获取页面数据
             getList() {
-                this.searchParameters.userId = JSON.parse(localStorage.getItem("user")).userId;
+                this.searchParameters.userId = JSON.parse(localStorage.getItem("user")).id;
                 listCoupons(this.searchParameters).then(res => {
+                    console.log(this.searchParameters)
                     this.pageTotal = res.data.total;
                     this.tableData = res.data.rows;
                     this.loading = false;
