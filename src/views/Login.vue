@@ -4,7 +4,7 @@
             <div class="login">
                 <div>
                     <div style="margin: 20px 0; text-align: center; font-size: 24px">
-                        <b>挖掘机配件商城</b>
+                        <b>账号登陆</b>
                     </div>
                     <el-form-item prop="userAccount">
                         <!--ref被用来给元素或子组件注册引用信息,引用信息将会注册在父组件的$refs对象上-->
