@@ -103,6 +103,7 @@
                             this.form.userName = JSON.parse(localStorage.getItem("user")).userName;
                             insertCoupon(this.form).then(res => {
                                 if (res.code === 10000) {
+                                    this.$router.push('/orders');
                                     this.$message({
                                         message: '购买成功',
                                         type: 'success'
